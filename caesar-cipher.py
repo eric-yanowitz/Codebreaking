@@ -1,5 +1,5 @@
 #decipher a caesar cipher with a key (key pushes the original alphabet forward i.e. pushes the replacement alphabet backwards)
-#option for partial decipher
+#option for abbreviated decipher (first 25 characters) and partial decipher (i.e. letters between '^' aren't deciphered)
 def caesar_decipher(ciphertext, key = 0, abbreviated = False, partial = False):
     plaintext = ""
     if key > 25 or key < 0:
@@ -32,8 +32,8 @@ def caesar_decipher(ciphertext, key = 0, abbreviated = False, partial = False):
             plaintext += j
     return plaintext
 
-# caesar cipher exhaustive; all 25 codes; default first 15 characters
-# option for full text
+# caesar cipher exhaustive; all 25 codes
+# options for abbreviated and partial like caesar_decipher()
 def caesar_decipher_ex(ciphertext, abbreviated = False, partial = False):
     plaintext = ""
     for i in range(0, 26):
@@ -42,6 +42,7 @@ def caesar_decipher_ex(ciphertext, abbreviated = False, partial = False):
         plaintext += "\n\n"
     return plaintext
 
+# frequency of letters in ciphertext compared with the natural frequency in english
 def frequency_analysis(ciphertext):
     natural_frequency = {'a': 8.2, 'b': 1.5, 'c': 2.8, 'd': 4.3, 'e': 12.7, 'f': 2.2, 'g': 2.0, 'h': 6.1, 'i': 7.0, 'j': 0.2, 'k': 0.8, 'l': 4.0, 'm': 2.4, 'n': 6.7, 'o': 7.5, 'p': 1.9, 'q': 0.1, 'r': 6.0, 's': 6.3, 't': 9.1, 'u': 2.8, 'v': 1.0, 'w': 2.4, 'x': 0.2, 'y': 2.0, 'z': 0.7}
     d = dict.fromkeys(natural_frequency.keys(), 0.0)
