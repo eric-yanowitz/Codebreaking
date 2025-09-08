@@ -1,3 +1,5 @@
+import cipher_tests as ct
+import string
 #decipher a caesar cipher with a key (key pushes the original alphabet forward i.e. pushes the replacement alphabet backwards)
 #option for abbreviated decipher (first 25 characters) and partial decipher (i.e. letters between '^' aren't deciphered)
 def caesar_decipher(ciphertext, key = 0, abbreviated = False, partial = False):
@@ -10,7 +12,7 @@ def caesar_decipher(ciphertext, key = 0, abbreviated = False, partial = False):
         if abbreviated == True and i > 24:
             break
         j = ciphertext[i]
-        if skip_count != 0:
+        if skip_count != 0 and partial == True:
             skip_count -= 1
             continue
         if partial == True and j == "^":
@@ -42,24 +44,40 @@ def caesar_decipher_ex(ciphertext, abbreviated = False, partial = False):
         plaintext += "\n\n"
     return plaintext
 
-# frequency of letters in ciphertext compared with the natural frequency in english
-def frequency_analysis(ciphertext):
-    natural_frequency = {'a': 8.2, 'b': 1.5, 'c': 2.8, 'd': 4.3, 'e': 12.7, 'f': 2.2, 'g': 2.0, 'h': 6.1, 'i': 7.0, 'j': 0.2, 'k': 0.8, 'l': 4.0, 'm': 2.4, 'n': 6.7, 'o': 7.5, 'p': 1.9, 'q': 0.1, 'r': 6.0, 's': 6.3, 't': 9.1, 'u': 2.8, 'v': 1.0, 'w': 2.4, 'x': 0.2, 'y': 2.0, 'z': 0.7}
-    d = dict.fromkeys(natural_frequency.keys(), 0.0)
-    char_count = 0
-    for i in ciphertext:
-        if i in d:
-            char_count += 1
-            d[i] += 1
+
+#letter substitution cipher
+def substitution_cipher(ciphertext, cipherkey = "", d1 = {}, **kwargs):
+    plaintext = ""
+    d = dict.fromkeys(string.ascii_lowercase, '')
     for key in d:
-        frequency = round(100*(d[key]/char_count), 1)
-        print(f'({key}: {frequency}%) ', end = '')
-    print("\n\nnatural frequency:")
-    for key, value in natural_frequency.items():
-        print(f'({key}: {value}%) ', end = '')
+        d[key] = ord(key.upper())
+    if len(cipherkey) == 26:
+        cipherkey.lower()
+        for i in range(97,123):
+            d[chr(i)] = cipherkey[i-97]
+    elif len(kwargs) > 0:
+        for key, value in kwargs.items():
+            key = key.lower()
+            d[key] = value.lower()    
+    elif len(d1) > 0:
+        for key, value in d1.items():
+            key = key.lower()
+            d[key] = value.lower()
+    else:
+        return
+    d_swap = {value: key for key, value in d.items()}
+    for i in ciphertext:
+        if i.lower() in d_swap:
+            plaintext += d_swap[i.lower()]
+        elif i.isalpha():
+            plaintext += i.upper()
+        else:
+            plaintext += i
+    return plaintext
 
-      
-ciphertext = "qcbufohizohs mci. ^i do not^ tcfush ^but^ hvwby ^of you^ jsfm aiqv ^and^ kcbrsf ^if we^ gvozzassh wbgwl cfgsjsb kssyg.\n\n^am so looking forward to it.^ Kobhhc gssmci acfs hvob wqob hszzmci. ^Will^ zsh ybck ^in^ opcih twjs kssyg hwas \n\nGvozz kowh dcfhzobr rd ghohwcb hvifgrom twjs qzcqy gvcizr aiqv zwys gssmci."
-# frequency_analysis(ciphertext)
-print(caesar_decipher(ciphertext, 14, False, True))
 
+cryptogram = "AzQr qR X YQKZLS aLfA hQflW OQAZ YXKqaXvR."
+print(substitution_cipher(cryptogram, t='a', a='x', e='l', i='q', p='k', h ='z', w='o', x='f', m='h', s='r', r='s', d='w', c='y', l ='v'))
+print(substitution_cipher(cryptogram, cipherkey = "xBywlFGzqJKvhNokQsraUVofYZ"))
+d = {'t': 'a', 'a': 'x', 'e': 'l'}
+print(substitution_cipher(cryptogram, d1 = d))
