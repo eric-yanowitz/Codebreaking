@@ -1,1 +1,2 @@
 1.) rewrite frequency_analysis using count function and use a list instead of a dictionary. also return the list
+2.) update substitution cipher for option between encryption key and reverse key. set reversekey = True for default.

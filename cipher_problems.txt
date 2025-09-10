@@ -6,8 +6,7 @@ solution: key = 14
 solution: key 25
 
 simple substitution cipher:
-1.) AzQr qR X YQKZLS aLfA hQflW OQAZ YXKqaXvR.
-solution: t='a', a='x', e='l', i='q', p='k', h ='z', w='o', x='f', m='h', s='r', r='s', d='w', c='y', l ='v'; "xBywlFGzqJKvhNokQsraUVofYZ"; d = {'t': 'a', 'a': 'x', 'e': 'l' ... }
-
-2.)
+1.) cryptogram = "abc defg, hi q jiklm nio pqnm e sbnbfeoim inlnb rko oabfb tu en ekfbrbha pino cik jen miwnliem pif rioa vej enm qnhoell x'yb rbbn fbemns qnoi aiw oi oegb zqjokfbh ip qbmqyqmkel hniwplegbh. qo qh en ede*bs zfijbhh. epobf oab eilomec o'll hbnm cik on en efoqjb eriko qo wqoa hidb b*edzlbh.."
+solution: q='i', b='e', g='k', m='d', y='v', k='u', e='a', l='l', n='n', j='c', i='o', o='t', p='f', w='w', c='y', r='b', a='h', h='s', f='r', z='p', t='i', u='s', x='i', s='g', d='m'
+solution text: hey mark, so i could not find a generatod onlne but there is an aurebesh font you can download for both Vac and install i've been readng into how to take pictures of iedividual snowflakes. it is an ama*eg process. after the aoltday t'll send you tn an artice about it with some e*amples..
 

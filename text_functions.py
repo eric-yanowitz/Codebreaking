@@ -39,3 +39,15 @@ def file_content(file_path, lines = False, strip = False):
             for line in file_content_temp:
                 file_content.append(line.strip())
     return file_content
+
+
+def words_of_length(text, n):
+    all_words = text.split()
+    words = {}
+    for i in all_words:
+        if len(i) == n: 
+            if i not in words:
+                words[i] = 1
+            else: 
+                words[i] += 1
+    return words
