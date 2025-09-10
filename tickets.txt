@@ -1,0 +1,1 @@
+1.) rewrite frequency_analysis using count function and use a list instead of a dictionary. also return the list

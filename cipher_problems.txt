@@ -1,0 +1,13 @@
+caesar cipher:
+1.) qcbufohizohs mci. ^i do not^ tcfush ^but^ hvwby ^of you^ jsfm aiqv ^and^ kcbrsf ^if we^ gvozzassh wbgwl cfgsjsb kssyg.\n\n^am so looking forward to it.^ Kobhhc gssmci acfs hvob wqob hszzmci. ^Will^ zsh ybck ^in^ opcih twjs kssyg hwas \n\nGvozz kowh dcfhzobr rd ghohwcb hvifgrom twjs qzcqy gvcizr aiqv zwys gssmci.
+solution: key = 14
+
+2.) snszk kxchr zakdc knmfh stcde nqsxk zshst cdrdu dmsxs gqdd
+solution: key 25
+
+simple substitution cipher:
+1.) AzQr qR X YQKZLS aLfA hQflW OQAZ YXKqaXvR.
+solution: t='a', a='x', e='l', i='q', p='k', h ='z', w='o', x='f', m='h', s='r', r='s', d='w', c='y', l ='v'; "xBywlFGzqJKvhNokQsraUVofYZ"; d = {'t': 'a', 'a': 'x', 'e': 'l' ... }
+
+2.)
+
