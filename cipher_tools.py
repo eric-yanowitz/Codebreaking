@@ -71,121 +71,136 @@ def index_of_coincidence(ciphertext):
         j = count[i][1]
         index += (j*(j-1))/denominator
     index = index*100
-    return f'IC: {round(index, 2)}'
+    return round(index, 2)
 
 
-def match_word(cipherword, comprehensive = False, regex = ""):
-    cipherword = cipherword.lower()
-    d = {}
-    if regex == "":
-        regex = r""
-        index = 1
-        d[cipherword[0]] = [index, True, 0]
-        for i in range(1, len(cipherword)):
-            if cipherword[i] not in d:
-                index += 1
-                d[cipherword[i]] = [index, False, 0]
-            else:
-                d[cipherword[i]][1] = True
-                d[cipherword[i]][2] += 1
-        for i in range(len(cipherword)):
-            if d[cipherword[i]][0] == 1 and d[cipherword[i]][1] == True:
-                regex += '(.)'
-                d[cipherword[i]][1] = False
-            elif d[cipherword[i]][1] == True and d[cipherword[i]][0] != 1:
-                regex += '(?!'
-                for i in range(d[cipherword[i]][0] - 1):
-                    i += 1
-                    regex += rf'\{i}'
-                regex += ')(.)'
-                d[cipherword[i]][1] = False
-            elif d[cipherword[i]][1] == False and d[cipherword[i]][2] > 0:
-                regex += rf'\{d[cipherword[i]][0]}'
-                d[cipherword[i]][2] -= 1        
-            else:
-                regex += '(?!'
-                for i in range(d[cipherword[i]][0] -1):
-                    i += 1
-                    regex += rf'\{i}'
-                regex += ')(.)'
-    word_list = []
-    print(regex)
+# def match_word(cipherword, comprehensive = False, partial = False):
+#     if len(cipherword) == 0:
+#         return
+#     if not cipherword.islower() and not cipherword.isupper():
+#         partial = True
+#         cipherword_t = cipherword
+#     d = {}
+#     regex = r""
+#     flag = 1
+#     d[cipherword[0]] = flag
+#     regex += '(.)'
+#     for i in range(1, len(cipherword)):
+#         if cipherword[i] in d:
+#             regex += rf'\{d[cipherword[i]]}'
+#         else:
+#             regex += '(?!'
+#             for j in range(1, flag + 1):
+#                 regex += rf'\{j}'
+#             regex += ')(.)'
+#             flag += 1
+#             d[cipherword[i]] = flag
+#     print(regex)
+#     word_list = []
+#     if comprehensive == True:
+#         file_path = 'english_word_list_comprehensive.txt'
+#     else:
+#         file_path = 'english_word_list_short.txt'
+#     file_content = tf.file_content(file_path, lines = True, strip = True)
+#     for line in file_content:
+#         if len(line) - 1 == len(cipherword):
+#             match = re.search(regex, line)
+#             if match:
+#                 word_list.append(match.group(0))
+#     if partial == False:
+#         return word_list
+#     else:
+#         temp = word_list
+#         word_list = []
+#         for i in temp:
+#             flag = False
+#             for j in range(len(cipherword_t)):
+#                 if cipherword_t[j].islower():
+#                     if i[j] == cipherword_t[j]:
+#                         continue
+#                     else:
+#                         flag = True
+#                         break
+#             if flag == True:
+#                 continue
+#             else:                
+#                 word_list.append(i)
+#         return word_list
+    
+
+#match word without regex's
+def match_word(cipherword, comprehensive = False, partial = False):
     if comprehensive == True:
         file_path = 'english_word_list_comprehensive.txt'
     else:
         file_path = 'english_word_list_short.txt'
     file_content = tf.file_content(file_path, lines = True, strip = True)
-    for line in file_content:
-        if len(line) - 1 == len(cipherword):
-            match = re.search(regex, line)
-            if match:
-                word_list.append(match.group(0))
-    return word_list
-
-
-
-def match_word_test(cipherword, comprehensive = False, partial = False, regex = ""):
-    if partial == True:
-        cipherword_t = cipherword
-    cipherword = cipherword.lower()
-    d = {}
-    if regex == "":
-        regex = r""
-        index = 1
-        d[cipherword[0]] = [index, True, 0]
-        for i in range(1, len(cipherword)):
-            if cipherword[i] not in d:
-                index += 1
-                d[cipherword[i]] = [index, False, 0]
-            else:
-                d[cipherword[i]][1] = True
-                d[cipherword[i]][2] += 1
-        for i in range(len(cipherword)):
-            if d[cipherword[i]][0] == 1 and d[cipherword[i]][1] == True:
-                regex += '(.)'
-                d[cipherword[i]][1] = False
-            elif d[cipherword[i]][1] == True and d[cipherword[i]][0] != 1:
-                regex += '(?!'
-                for i in range(d[cipherword[i]][0] - 1):
-                    i += 1
-                    regex += rf'\{i}'
-                regex += ')(.)'
-                d[cipherword[i]][1] = False
-            elif d[cipherword[i]][1] == False and d[cipherword[i]][2] > 0:
-                regex += rf'\{d[cipherword[i]][0]}'
-                d[cipherword[i]][2] -= 1        
-            else:
-                regex += '(?!'
-                for i in range(d[cipherword[i]][0] -1):
-                    i += 1
-                    regex += rf'\{i}'
-                regex += ')(.)'
     word_list = []
-    print(regex)
-    if comprehensive == True:
-        file_path = 'english_word_list_comprehensive.txt'
-    else:
-        file_path = 'english_word_list_short.txt'
-    file_content = tf.file_content(file_path, lines = True, strip = True)
-    for line in file_content:
-        if len(line) - 1 == len(cipherword):
-            match = re.search(regex, line)
-            if match:
-                word_list.append(match.group(0))
-    if partial == True:
-        temp = word_list
-        word_list = []
-        for i in temp:
-            flag = False
-            for j in range(len(cipherword_t)):
-                if cipherword_t[j].islower():
-                    if i[j] == cipherword_t[j]:
-                        if j == (len(cipherword_t) - 1):
-                            word_list.append(i)
+    d ={}
+    if cipherword.islower() or cipherword.isupper():
+        for i in range(len(cipherword)):
+            if cipherword[i] not in d:
+                d[cipherword[i]] = []
+                d[cipherword[i]].append(i)
+            else:
+                d[cipherword[i]].append(i)
+        print(d)
+        for i in file_content:
+            if len(i) - 1 == len(cipherword):
+                s = set(i) 
+                if len(s)-1 == len(d):
+                    flag = False
+                    for key in d:
+                        if len(d[key]) > 1: 
+                            for j in range(len(d[key])-1):
+                                k = d[key][j]
+                                l = d[key][j+1]
+                                if i[k] != i[l]:
+                                    flag = True
+                                    break
+                        if flag == True:
+                            break
+                    if flag == True:
                         continue
                     else:
-                        break
+                        word = ""
+                        for n in range(len(i)-1):
+                            word += i[n]
+                        word_list.append(word)
+    else:
+        for i in range(len(cipherword)):
+                if cipherword[i] not in d:
+                    d[cipherword[i]] = []
+                    d[cipherword[i]].append(i)
+                else:
+                    d[cipherword[i]].append(i)
+        print(d)
+        for i in file_content:
+            if len(i) - 1 == len(cipherword):
+                s = set(i) 
+                if len(s)-1 == len(d):
+                    flag = False
+                    for key in d:
+                        if key.islower():
+                            for j in range(len(d[key])):
+                                if i[d[key][j]] != key:
+                                    flag = True
+                                    break
+                        else:
+                            if len(d[key]) > 1: 
+                                for j in range(len(d[key])-1):
+                                    k = d[key][j]
+                                    l = d[key][j+1]
+                                    if i[k] != i[l]:
+                                        flag = True
+                                        break
+                        if flag == True:
+                            break
+                    if flag == True:
+                        continue
+                    else:
+                        word = ""
+                        for n in range(len(i)-1):
+                            word += i[n]
+                        word_list.append(word)
     return word_list
-
-
-print(match_word_test(cipherword = 'aEERKEa', comprehensive = True, partial = True))

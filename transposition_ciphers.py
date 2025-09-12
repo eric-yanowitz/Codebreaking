@@ -1,13 +1,13 @@
 #decipher a caesar cipher with a key (key pushes the original alphabet forward i.e. pushes the replacement alphabet backwards)
 #option for abbreviated decipher (first 25 characters) and partial decipher (i.e. letters between '^' aren't deciphered)
-def caesar_decipher(ciphertext, key = 0, abbreviated = False, partial = False):
+def caesar_cipher(ciphertext, key = 0, abbreviated = False, partial = False):
     plaintext = ""
     if key > 25 or key < 0:
-        plaintext = "improper key value"
+        plaintext = "key must be 0 through 25"
         return plaintext
     skip_count = 0
     for i in range(len(ciphertext)):
-        if abbreviated == True and i > 24:
+        if abbreviated == True and i == 24:
             break
         j = ciphertext[i]
         if skip_count != 0 and partial == True:
@@ -34,12 +34,10 @@ def caesar_decipher(ciphertext, key = 0, abbreviated = False, partial = False):
     return plaintext
 
 # caesar cipher exhaustive; all 25 codes
-# options for abbreviated and partial like caesar_decipher()
-def caesar_decipher_ex(ciphertext, abbreviated = False, partial = False):
+def caesar_cipher_ex(ciphertext, abbreviated = False, partial = False):
     plaintext = ""
     for i in range(0, 26):
         plaintext += f"key = {i}: "
-        plaintext += caesar_decipher(ciphertext, i, abbreviated, partial)
+        plaintext += caesar_cipher(ciphertext, i, abbreviated, partial)
         plaintext += "\n\n"
     return plaintext
-

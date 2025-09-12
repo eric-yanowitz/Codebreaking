@@ -33,23 +33,31 @@ import string
 
 # li = [['a', []], ['b', []], ['c', []], ['d', []], ['e', []], ['f', []], ['g', []], ['h', []], ['i', []], ['j', []], ['k', []], ['l', []], ['m', []], ['n', []], ['o', []], ['p', []], ['q', []], ['r', []], ['s', []], ['t', []], ['u', []], ['v', []], ['w', []], ['x', []], ['y', []], ['z', []]] #reverse key
 
-
-#substitution cipher with the possibility of multiple letters in the ciphertext standing for the same letter in the plaintext; and input = reverse key, not encryption key
-def simple_sub_cipher(ciphertext, reverse_cipherkey = "", d1 = [], **kwargs):
+#straight substitution for any character found in the ciphertext
+def substitution_cipher(ciphertext, **kwargs):
     plaintext = ""
     d = dict.fromkeys(string.ascii_lowercase, '') #reverse key
-    if len(kwargs) > 0:
-        for key, value in kwargs.items():
-            key = key.lower()
-            d[key] = value.lower()
-    else: 
-        return
+    for key, value in kwargs.items():
+        if len(key) > 1:
+            for i in range(len(key)):
+                if key[i].isalpha():
+                    t = key[i].lower()
+                    d[t] = value[i].lower()
+                else:
+                    d[t] = value[i]
+        else:
+            if key.isalpha():
+                key = key.lower()
+                d[key] = value.lower()
+            else:
+                d[key] = value
     for key in d:
         if len(d[key]) == 0:
             d[key] = key.upper()
     for i in ciphertext:
         if i.isalpha():
             i = i.lower()
+        if i in d:
             plaintext += d[i]
         else:
             plaintext += i

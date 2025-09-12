@@ -7,6 +7,20 @@ solution: key 25
 
 simple substitution cipher:
 1.) cryptogram = "abc defg, hi q jiklm nio pqnm e sbnbfeoim inlnb rko oabfb tu en ekfbrbha pino cik jen miwnliem pif rioa vej enm qnhoell x'yb rbbn fbemns qnoi aiw oi oegb zqjokfbh ip qbmqyqmkel hniwplegbh. qo qh en ede*bs zfijbhh. epobf oab eilomec o'll hbnm cik on en efoqjb eriko qo wqoa hidb b*edzlbh.."
+
 solution: q='i', b='e', g='k', m='d', y='v', k='u', e='a', l='l', n='n', j='c', i='o', o='t', p='f', w='w', c='y', r='b', a='h', h='s', f='r', z='p', t='i', u='s', x='i', s='g', d='m'
+
 solution text: hey mark, so i could not find a generatod onlne but there is an aurebesh font you can download for both Vac and install i've been readng into how to take pictures of iedividual snowflakes. it is an ama*eg process. after the aoltday t'll send you tn an artice about it with some e*amples..
+
+2.)cryptogram = "abc dcefg fhi jbk lhm kgfkn ompphok lhm jbk ogqlcde gh dcefg c fjrk skkd gblcde gh anhmbcof j ncggnk. fjrk skkd hmg sbkjtcde bhjqo gfco jagkbdhhd ahb gfk ijehdo. ehhq dcefg"
+
+solution: j='a', a='f', k='e', b='r', d='n', h='o', q='d', o ='s', r='v', s='b', c='i', i='w', l='y', m='u', f='h', g='t', n='l', e='g', t='k', p='p'
+
+solution text: fri night how are you ethel suppose you are stdying to night i have been trying to flourish a little. have been out breaking roads this afternoon for the wagons. good night
+
+3.)cryptogram = "uwckwccbsd ex kzw owvvbcy ex wdbrwtwkz scv obddbsj 1917 * xhbwvjsc * 2017"
+solution: u='c', w='e', c='n', k='t', b='i', s='a', d='l', e='o', x='f', o='w', v='d', y='g', r='z', t='b', z='h', j='m', h='r'
+solution text: centennial of the wedding of elizebeth and william 1917 * friedman * 2017
+
+
 
