@@ -1,34 +1,36 @@
 import text_functions as tf
 import re
 
+def cipher_analysis(ciphertext, top = 0, bottom = 0, n1 = 5, n2 = 5, capitals1 = False, capitals2 = False):
+    frequency_analysis(ciphertext, top, bottom)
+    print('')
+    print(f'Missing letters: {letter_count(ciphertext)[27][1]}')
+    print(f'IC: {index_of_coincidence(ciphertext)}')
+    print(digraphs(ciphertext, n1, capitals1))
+    print(trigraphs(ciphertext, n2, capitals2))
+
+
 def letter_count(ciphertext):
-    count = [['a' , 0], ['b' , 0], ['c' , 0], ['d' , 0], ['e' , 0], ['f' , 0], ['g' , 0], ['h' , 0], ['i' , 0], ['j' , 0], ['k' , 0], ['l' , 0], ['m' , 0], ['n' , 0], ['o' , 0], ['p' , 0], ['q' , 0], ['r' , 0], ['s' , 0], ['t' , 0], ['u' , 0], ['v' , 0], ['w' , 0], ['x' , 0], ['y' , 0], ['z' , 0], ['total', 0]]
+    count = [['a' , 0], ['b' , 0], ['c' , 0], ['d' , 0], ['e' , 0], ['f' , 0], ['g' , 0], ['h' , 0], ['i' , 0], ['j' , 0], ['k' , 0], ['l' , 0], ['m' , 0], ['n' , 0], ['o' , 0], ['p' , 0], ['q' , 0], ['r' , 0], ['s' , 0], ['t' , 0], ['u' , 0], ['v' , 0], ['w' , 0], ['x' , 0], ['y' , 0], ['z' , 0], ['total', 0], ['missing letters', 0]]
     for i in ciphertext:
-        if i.isalpha():
+        if i.isalpha() and ord(i) < 123:
             n = ord(i.lower()) - 97
             count[n][1] += 1
             count[26][1] += 1
+    for i in range(len(count) - 2):
+        if count[i][1] == 0:
+            count[27][1] += 1
     return count
-
-def letters_present(ciphertext):
-    letters_temp = letter_count(ciphertext)
-    letters = []
-    t = ['total', 0]
-    for i in range(len(letters_temp) - 1):
-        if letters_temp[i][1] != 0:
-            t[1] += 1
-            letters.append(letters_temp[i][0])
-    letters.append(t)
-    return letters 
  
 
 # frequency of letters in ciphertext compared with the natural frequency in english
-def frequency_analysis(ciphertext, top = 0, bottom = 0, show_freq = True, show_count = False):
+def frequency_analysis(ciphertext, top = 0, bottom = 0):
     natural_freq = {'a': 8.2, 'b': 1.5, 'c': 2.8, 'd': 4.3, 'e': 12.7, 'f': 2.2, 'g': 2.0, 'h': 6.1, 'i': 7.0, 'j': 0.2, 'k': 0.8, 'l': 4.0, 'm': 2.4, 'n': 6.7, 'o': 7.5, 'p': 1.9, 'q': 0.1, 'r': 6.0, 's': 6.3, 't': 9.1, 'u': 2.8, 'v': 1.0, 'w': 2.4, 'x': 0.2, 'y': 2.0, 'z': 0.7}
     d_count = dict.fromkeys(natural_freq.keys(), 0.0)
     d_freq = d_count
     char_count = 0
     for i in ciphertext:
+        i = i.lower()
         if i in d_count:
             char_count += 1
             d_count[i] += 1
@@ -67,7 +69,7 @@ def index_of_coincidence(ciphertext):
     index = 0.0
     total = count[26][1]
     denominator = total*(total-1)
-    for i in range(len(count) - 1):
+    for i in range(len(count) - 2):
         j = count[i][1]
         index += (j*(j-1))/denominator
     index = index*100
@@ -144,7 +146,6 @@ def match_word(cipherword, comprehensive = False, partial = False):
                 d[cipherword[i]].append(i)
             else:
                 d[cipherword[i]].append(i)
-        print(d)
         for i in file_content:
             if len(i) - 1 == len(cipherword):
                 s = set(i) 
@@ -174,7 +175,6 @@ def match_word(cipherword, comprehensive = False, partial = False):
                     d[cipherword[i]].append(i)
                 else:
                     d[cipherword[i]].append(i)
-        print(d)
         for i in file_content:
             if len(i) - 1 == len(cipherword):
                 s = set(i) 
@@ -204,3 +204,75 @@ def match_word(cipherword, comprehensive = False, partial = False):
                             word += i[n]
                         word_list.append(word)
     return word_list
+
+
+def digraphs(ciphertext, n = 5, all = False, capitals = False):
+    if capitals == True:
+        cipher = ""
+        for i in ciphertext:
+            if i.islower():
+                cipher += i
+        return digraphs(cipher, n, all, capitals = False) 
+    d = {}   
+    for i in range(len(ciphertext)-1):
+        if ciphertext[i] != ' ' and ciphertext[i+1] != ' ':
+            graph = ciphertext[i] + ciphertext[i+1]
+            if graph not in d:
+                d[graph] = 1
+            else: 
+                d[graph] += 1
+        else:
+            continue
+    dswap_list = [[value, key] for key, value in d.items()]
+    dswap_list.sort(reverse = True)
+    d2 ={}
+    if all == True:
+        for i in dswap_list:
+            d2[i[1]] = i[0]
+    else:
+        count = 0
+        for i in dswap_list:
+            if count == n:
+                break
+            d2[i[1]] = i[0]
+            count += 1
+    return d2
+
+
+def trigraphs(ciphertext, n = 5, all = False, capitals = False):
+    if capitals == True:
+        cipher = ""
+        for i in ciphertext:
+            if i.islower():
+                cipher += i
+        return trigraphs(cipher, n, all, capitals = False) 
+    d = {}
+    for i in range(len(ciphertext)-2):
+        if ciphertext[i] != ' ' and ciphertext[i+1] != ' ' and ciphertext[i+2] != ' ':
+            graph = ciphertext[i] + ciphertext[i+1] + ciphertext[i+2]
+            if graph not in d:
+                d[graph] = 1
+            else: 
+                d[graph] += 1
+        else:
+            continue
+    dswap_list = [[value, key] for key, value in d.items()]
+    dswap_list.sort(reverse = True)
+    d2 ={}
+    if all == True:
+        for i in dswap_list:
+            d2[i[1]] = i[0]
+    else:
+        count = 0
+        for i in dswap_list:
+            if count == n:
+                break
+            d2[i[1]] = i[0]
+            count += 1
+    return d2
+
+
+def graphs(ciphertext, n1 = 5, n2 = 5, capitals = True):
+    print(digraphs(ciphertext, n1, capitals))
+    print(trigraphs(ciphertext, n2, capitals))
+
