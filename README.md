@@ -1,4 +1,4 @@
 # cryptology
 cryptanalysis tools
 
-cryptanalysis functions and scripts mostly in python
+cryptanalysis functions, algorithms, and scripts in python

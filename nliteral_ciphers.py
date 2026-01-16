@@ -1,3 +1,40 @@
+#biliteral ciphers: https://en.wikipedia.org/wiki/Bacon%27s_cipher
+
+#given a key ('codeA'), encodes each character from the 'text' to A or B
+#option to encode 'punctuation' marks (True) or exclude them (False)
+#option to treat 'capitals' seperately (True) or the same as lower case (False)
+#option to 'reverse' (True) the encoding so that the key ('codeA') encodes B instead of A
+def biliteral_encoder(text = "", codeA = "", capitals = False, reverse = False, punctuation = False):
+    biliteral_string = ""
+    text = text.replace(' ', '')
+    codeA = codeA.replace(' ', '')
+    if capitals == False:
+        codeA = codeA.lower()
+        text = text.lower()
+    codeA = set(codeA)
+    if punctuation == False:
+        for i in codeA:
+            if not i.isalpha():
+                codeA.remove(i)
+    for i in text:
+        if punctuation == False and not i.isalpha():
+            continue
+        if i in codeA:
+            if reverse == False:
+                biliteral_string += 'a'
+            else:
+                biliteral_string += 'b'
+        else:
+            if reverse == False:
+                biliteral_string += 'b'
+            else:
+                biliteral_string += 'a' 
+    return biliteral_string
+
+
+#converts a biliteral string to plaintext
+#option to convert from the original 'latin' alphabet (True) where i/j and u/v were printed with the same character
+#option to convert from 'both' (True) the modern and original latin alphabet
 def interpret_biliteral(biliteral, latin = True, both = False):
     plaintext = ""
     if latin == True:
@@ -13,35 +50,10 @@ def interpret_biliteral(biliteral, latin = True, both = False):
     return plaintext
 
 
-def biliteral_encoder(text = "", code = "", capitals = False, reverse = False, grammar = False):
-    biliteral_string = ""
-    text = text.replace(' ', '')
-    code = code.replace(' ', '')
-    if capitals == False:
-        code = code.lower()
-        text = text.lower()
-    code = set(code)
-    if grammar == False:
-        for i in code:
-            if not i.isalpha():
-                code.remove(i)
-    for i in text:
-        if grammar == False and not i.isalpha():
-            continue
-        if i in code:
-            if reverse == False:
-                biliteral_string += 'a'
-            else:
-                biliteral_string += 'b'
-        else:
-            if reverse == False:
-                biliteral_string += 'b'
-            else:
-                biliteral_string += 'a' 
-    return biliteral_string
-
-
-def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, grammar = False, allcodes = False):
+#given a key ('codeA' and 'codeB'), encodes each character in a 'text' to A, B, or C
+#for options 'capitals' and 'punctuation' refer to biliteral_encoder function
+#option 'allcodes' (True) - encodes 'text' to all 6 combinations of key ('codeA' and 'codeB') and returns a list of 6 strings
+def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, punctuation = False, allcodes = False):
     triliteral_string = ""
     text = text.replace(' ', '')
     codeA = codeA.replace(' ', '')
@@ -50,18 +62,18 @@ def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, gram
         text = text.lower()
         codeA = codeA.lower()
         codeB = codeB.lower()
-    if grammar == False:
+    if punctuation == False:
         text_temp = ""
         codeA_temp = ""
         codeB_temp = ""
         for i in text:
-            if i.isalpha() or i.isdigit():
+            if i.isalpha():
                 text_temp += i
         for i in codeA:
-            if i.isalpha() or i.isdigit():
+            if i.isalpha():
                 codeA_temp += i
         for i in codeB:
-            if i.isalpha() or i.isdigit():
+            if i.isalpha():
                 codeB_temp += i
         text = text_temp
         codeA = codeA_temp
@@ -107,6 +119,9 @@ def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, gram
         return triliteral_string
 
 
+#converts a triliteral string back to plaintext
+#option to convert from the original 'latin' alphabet (True) where i/j and u/v were printed with the same character
+#option to convert from 'both' (True) the modern and original latin alphabet
 def interpret_triliteral(triliteral, latin = True, both = False):
     plaintext = ""
     d1 = {"aaa":"A","aab":"B","aac":"C","aba":"D","abb":"E","abc":"F","aca":"G","acb":"H","acc":"I","baa":"K","bab":"L","bac":"M","bba":"N","bbb":"O","bbc":"P","bca":"Q","bcb":"R","bcc":"S","caa":"T","cab":"U","cac":"W","cba":"X","cbb":"Y","cbc":"Z"}
