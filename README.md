@@ -1,5 +1,5 @@
 # cryptology
-cryptanalysis tools for classical ciphers
+cipher decryption and cryptanalysis tools for classical ciphers
 
 classical ciphers: https://en.wikipedia.org/wiki/Classical_cipher
 
