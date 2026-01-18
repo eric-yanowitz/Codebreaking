@@ -1,10 +1,10 @@
 #biliteral ciphers: https://en.wikipedia.org/wiki/Bacon%27s_cipher
 
 #given a key ('codeA'), encodes each character from the 'text' to A or B
-#option to encode 'punctuation' marks (True) or exclude them (False)
-#option to treat 'capitals' seperately (True) or the same as lower case (False)
+#option to treat 'capitals' (True) as distinct from lower case
+#option to encode 'onlyletters' (True) or to encode all characters (False)
 #option to 'reverse' (True) the encoding so that the key ('codeA') encodes B instead of A
-def biliteral_encoder(text = "", codeA = "", capitals = False, reverse = False, punctuation = False):
+def biliteral_encoder(text = "", codeA = "", capitals = False, onlyletters = True, reverse = False):
     biliteral_string = ""
     text = text.replace(' ', '')
     codeA = codeA.replace(' ', '')
@@ -12,12 +12,12 @@ def biliteral_encoder(text = "", codeA = "", capitals = False, reverse = False, 
         codeA = codeA.lower()
         text = text.lower()
     codeA = set(codeA)
-    if punctuation == False:
+    if onlyletters == True:
         for i in codeA:
             if not i.isalpha():
                 codeA.remove(i)
     for i in text:
-        if punctuation == False and not i.isalpha():
+        if onlyletters == True and not i.isalpha():
             continue
         if i in codeA:
             if reverse == False:
@@ -47,13 +47,15 @@ def interpret_biliteral(biliteral, latin = True, both = False):
         j = biliteral[i:i+5]
         if j in d:
             plaintext += d[j]
+    plaintext += '\n'
     return plaintext
 
 
 #given a key ('codeA' and 'codeB'), encodes each character in a 'text' to A, B, or C
-#for options 'capitals' and 'punctuation' refer to biliteral_encoder function
-#option 'allcodes' (True) - encodes 'text' to all 6 combinations of key ('codeA' and 'codeB') and returns a list of 6 strings
-def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, punctuation = False, allcodes = False):
+#option to treat 'capitals' (True) as distinct from lower case
+#option to encode 'onlyletters' (True) or to encode all characters (False)
+#option 'allcodes' (True) - encodes 'text' to all 6 combinations of codeA codeB codeC, and returns a list of 6 strings
+def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, onlyletters = True, allcodes = False):
     triliteral_string = ""
     text = text.replace(' ', '')
     codeA = codeA.replace(' ', '')
@@ -62,7 +64,7 @@ def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, punc
         text = text.lower()
         codeA = codeA.lower()
         codeB = codeB.lower()
-    if punctuation == False:
+    if onlyletters == True:
         text_temp = ""
         codeA_temp = ""
         codeB_temp = ""
@@ -124,8 +126,8 @@ def triliteral_encoder(text = "", codeA = "", codeB = "", capitals = False, punc
 #option to convert from 'both' (True) the modern and original latin alphabet
 def interpret_triliteral(triliteral, latin = True, both = False):
     plaintext = ""
-    d1 = {"aaa":"A","aab":"B","aac":"C","aba":"D","abb":"E","abc":"F","aca":"G","acb":"H","acc":"I","baa":"K","bab":"L","bac":"M","bba":"N","bbb":"O","bbc":"P","bca":"Q","bcb":"R","bcc":"S","caa":"T","cab":"U","cac":"W","cba":"X","cbb":"Y","cbc":"Z"}
-    d2 = {"aaa":"A","aab":"B","aac":"C","aba":"D","abb":"E","abc":"F","aca":"G","acb":"H","acc":"I","baa":"J","bab":"K","bac":"L","bba":"M","bbb":"N","bbc":"O","bca":"P","bcb":"Q","bcc":"R","caa":"S","cab":"T","cac":"U","cba":"V","cbb":"W","cbc":"X","cca":"Y","ccb":"Z"}
+    d1 = {"aaa":"A","aab":"B","aac":"C","aba":"D","abb":"E","abc":"F","aca":"G","acb":"H","acc":"I","baa":"K","bab":"L","bac":"M","bba":"N","bbb":"O","bbc":"P","bca":"Q","bcb":"R","bcc":"S","caa":"T","cab":"U","cac":"W","cba":"X","cbb":"Y","cbc":"Z","cca": " ","ccb": " ","ccc": " "}
+    d2 = {"aaa":"A","aab":"B","aac":"C","aba":"D","abb":"E","abc":"F","aca":"G","acb":"H","acc":"I","baa":"J","bab":"K","bac":"L","bba":"M","bbb":"N","bbc":"O","bca":"P","bcb":"Q","bcc":"R","caa":"S","cab":"T","cac":"U","cba":"V","cbb":"W","cbc":"X","cca":"Y","ccb":"Z", "ccc": " "}
     d = {}
     if both == True:
         return interpret_triliteral(triliteral, latin = True, both = False) + interpret_triliteral(triliteral, latin = False, both = False)
@@ -133,31 +135,21 @@ def interpret_triliteral(triliteral, latin = True, both = False):
         d = d1
     else:
         d = d2
-    
-    NA_count = 0
+
     if type(triliteral) == str:
         for i in range(0, len(triliteral), 3):
             j = triliteral[i:i+3]
             if j in d:
                 plaintext += d[j]
-            else:
-                NA_count += 1
         plaintext += '\n'
-        print(f'NA count: {NA_count}')
     elif type(triliteral) == list:
-        print('NA count: ', end ='')
         for i in range(len(triliteral)):
             triliteral_l = triliteral[i]
             plaintext += f"{i+1}: "
-            NA_count = 0
             for i in range(0, len(triliteral_l), 3):
                 j = triliteral_l[i:i+3]
                 if j in d:
                     plaintext += d[j]
-                else:
-                    NA_count += 1
             plaintext += '\n'
-            print(f'{NA_count}, ', end = '')
-        print()
     return plaintext
     

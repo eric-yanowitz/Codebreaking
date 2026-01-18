@@ -1,4 +1,5 @@
 # cryptology
-cryptanalysis tools
+cryptanalysis tools for classical ciphers
 
-cryptanalysis functions, algorithms, and scripts in python
+classical ciphers: https://en.wikipedia.org/wiki/Classical_cipher
+

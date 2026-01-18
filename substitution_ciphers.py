@@ -5,7 +5,7 @@ import string
 
 #given a 'key' number, deciphers a caesar cipher text (key pushes the plaintext 
 # alphabet forward x spaces i.e. pushes the substitution alphabet backwards x spaces)
-#option for 'abbreviated' decipher result (first 25 characters) 
+#option for 'abbreviated' result (returns first 25 deciphered characters) 
 #option for 'partial' decipher - letters between the '^' character in the cryptogram are
 # not deciphered i.e. inserted without change into the plaintext result
 def caesar_cipher(ciphertext, key = 0, abbreviated = False, partial = False):
@@ -59,9 +59,9 @@ def caesar_cipher_ex(ciphertext, abbreviated = False, partial = False):
 
 
 #given a key, performs a substitution on the ciphertext
-#the key(s) are given as multiple key='value' pairs or a single pair
+#the key(s) are given as key='value' pairs or a single pair that is one-to-one
 # (e.g. i='a', b='f', l='e' or ibl='afe' - both are the same)
-# a single-character key can have a multiple character value (e.g. i='th' or &='to')
+# a single-character key can have a multiple character value when inputed as a single pair (e.g. i='th', &='to')
 def substitution_cipher(ciphertext, **kwargs):
     plaintext = ""
     d = dict.fromkeys(string.ascii_lowercase, '')

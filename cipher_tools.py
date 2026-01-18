@@ -1,17 +1,18 @@
 import text_functions as tf
-import re
+import string
 
 
-#runs gamut of cipher analysis functions in a single function and presents them nicely
-def cipher_analysis(ciphertext, top = 0, bottom = 0, n1 = 5, n2 = 5, capitals1 = False, capitals2 = False):
-    frequency_analysis(ciphertext, top, bottom)
+#runs gamut of cipher analysis functions and presents them nicely
+def cipher_analysis(ciphertext, top = 0, bottom = 0, n1 = 5, n2 = 5, capitals = True, punctuation = False):
+    frequency_analysis(ciphertext, top = top, bottom = bottom)
     print('')
     print(f'Missing letters: {letter_count(ciphertext)[27][1]}')
     print(f'IC: {index_of_coincidence(ciphertext)}')
-    print(digraphs(ciphertext, n1, capitals1))
-    print(trigraphs(ciphertext, n2, capitals2))
+    print(digraphs(ciphertext, n = n1, capitals = capitals, punctuation = punctuation))
+    print(trigraphs(ciphertext, n = n2, capitals = capitals, punctuation = punctuation))
 
-#returns list of the counts for each english letter, total letters, and any letters that don't appear in the ciphertext
+
+#returns list of the counts for each english letter, total letters, and missing letters
 def letter_count(ciphertext):
     count = [['a' , 0], ['b' , 0], ['c' , 0], ['d' , 0], ['e' , 0], ['f' , 0], ['g' , 0], ['h' , 0], ['i' , 0], ['j' , 0], ['k' , 0], ['l' , 0], ['m' , 0], ['n' , 0], ['o' , 0], ['p' , 0], ['q' , 0], ['r' , 0], ['s' , 0], ['t' , 0], ['u' , 0], ['v' , 0], ['w' , 0], ['x' , 0], ['y' , 0], ['z' , 0], ['total', 0], ['missing letters', 0]]
     for i in ciphertext:
@@ -26,7 +27,7 @@ def letter_count(ciphertext):
  
 
 #prints frequency of each letter in the ciphertext compared with the natural frequency in english
-#option to print 'top' and/or 'bottom' n most frequent letters 
+#option to print 'top' and 'bottom' n most frequent letters 
 def frequency_analysis(ciphertext, top = 0, bottom = 0):
     natural_freq = {'a': 8.2, 'b': 1.5, 'c': 2.8, 'd': 4.3, 'e': 12.7, 'f': 2.2, 'g': 2.0, 'h': 6.1, 'i': 7.0, 'j': 0.2, 'k': 0.8, 'l': 4.0, 'm': 2.4, 'n': 6.7, 'o': 7.5, 'p': 1.9, 'q': 0.1, 'r': 6.0, 's': 6.3, 't': 9.1, 'u': 2.8, 'v': 1.0, 'w': 2.4, 'x': 0.2, 'y': 2.0, 'z': 0.7}
     d_count = dict.fromkeys(natural_freq.keys(), 0.0)
@@ -37,7 +38,7 @@ def frequency_analysis(ciphertext, top = 0, bottom = 0):
         if i in d_count:
             total += 1
             d_count[i] += 1
-    print("Cipher Text:")
+    print("Cipher Text Frequency:")
     for key in d_count:
         frequency = round(100*(d_count[key]/total), 1)
         d_freq[key] = frequency
@@ -64,7 +65,6 @@ def frequency_analysis(ciphertext, top = 0, bottom = 0):
             print('/ ', end = '')
         for i in range(bottom):
             print(f'{d_freq_sorted[len(d_freq_sorted) - bottom + i]}, ', end = '')
-    return
 
 
 #returns the Index of Coincidence of a ciphertext
@@ -85,10 +85,10 @@ def index_of_coincidence(ciphertext):
 #Given a 'cipherword', returns list of all words that have the same pattern 
 # (e.g. 'yfygh' will return all words of length 5 that have the same letter in the first and third position,
 #  but different letters in the second, fourth, and fifth position)
-# To fix certain letters, put them in lower case and the non-fixed letters in upper case
-#  (e.g. 'YFYal' will return all words of length 5 ending in 'al' that have the same letters in the first
-#   and third position - 'rural', total', 'usual') 
-#option to search from a 'comprehensive' (True) english word list or a shorter common word list (False)
+# To fix certain letters, put the fixed letters in lower case and the non-fixed letters in upper case
+#  (e.g. 'YFYal' will return all words of length 5 ending in 'al' that have the same letter in the first
+#   and third position, and a different letter in the second position - 'rural', total', 'usual') 
+#option to search from a 'comprehensive' (True) english word list or a smaller common word list (False)
 def match_word(cipherword, comprehensive = False):
     if comprehensive == True:
         file_path = 'english_word_list_comprehensive.txt'
@@ -105,7 +105,7 @@ def match_word(cipherword, comprehensive = False):
             else:
                 d[cipherword[i]].append(i)
         for i in file_content:
-            if len(i)-1 == len(cipherword):      #file_content places '\n' char after every word
+            if len(i)-1 == len(cipherword):      #len(i)-1: file_content places '\n' char after every word
                 s = set(i) 
                 if len(s)-1 == len(d):
                     flag = False
@@ -165,22 +165,27 @@ def match_word(cipherword, comprehensive = False):
 
 
 #runs digraphs and trigraphs in a single function
-def graphs(ciphertext, n1 = 5, n2 = 5, capitals = True):
-    print(digraphs(ciphertext, n1, capitals))
-    print(trigraphs(ciphertext, n2, capitals))
+def graphs(ciphertext, n1 = 5, n2 = 5, capitals = True, punctuation = False):
+    print(digraphs(ciphertext, n = n1, capitals = capitals, punctuation = punctuation))
+    print(trigraphs(ciphertext, n = n2, capitals = capitals, punctuation = punctuation))
 
 
 #returns an ordered dictionary of all digraphs and their frequency
 #option to return 'n' most frequent digraphs or 'all' (True) digraphs 
 # (default returns 5 most frequent digraphs)
-#option to treat 'capitals' the same as lower case (False) or to exclude all 'capitals' (True)
-def digraphs(ciphertext, n = 5, all = False, capitals = False):
-    if capitals == True:
-        cipher = ""
+#option to treat 'capitals' (True) as distinct from lower case
+#option to include 'punctuation' marks (True) or exclude them (False)
+def digraphs(ciphertext, n = 5, all = False, capitals = True, punctuation = False):
+    if capitals == False:
+        ciphertext = ciphertext.lower()
+    if punctuation == False:
+        ciphertext2 = ""
         for i in ciphertext:
-            if i.islower():
-                cipher += i
-        return digraphs(cipher, n, all, capitals = False) 
+            if i in string.punctuation:
+                ciphertext2 += ' '
+            else:
+                ciphertext2 += i
+        ciphertext = ciphertext2
     d = {}   
     for i in range(len(ciphertext)-1):
         if ciphertext[i] != ' ' and ciphertext[i+1] != ' ':
@@ -210,14 +215,19 @@ def digraphs(ciphertext, n = 5, all = False, capitals = False):
 #returns an ordered dictionary of all trigraphs and their frequency
 #option to return 'n' most frequent trigraphs or 'all' (True) trigraphs 
 # (default returns 5 most frequent digraphs)
-#option to treat 'capitals' the same as lower case (False) or to exclude all 'capitals' (True)
-def trigraphs(ciphertext, n = 5, all = False, capitals = False):
-    if capitals == True:
-        cipher = ""
+#option to treat 'capitals' (True) as distinct from lower case
+#option to include 'punctuation' marks (True) or exclude them (False)
+def trigraphs(ciphertext, n = 5, all = False, capitals = True, punctuation = False):
+    if capitals == False:
+        ciphertext = ciphertext.lower()
+    if punctuation == False:
+        ciphertext2 = ""
         for i in ciphertext:
-            if i.islower():
-                cipher += i
-        return trigraphs(cipher, n, all, capitals = False) 
+            if i in string.punctuation:
+                ciphertext2 += ' '
+            else:
+                ciphertext2 += i
+        ciphertext = ciphertext2
     d = {}
     for i in range(len(ciphertext)-2):
         if ciphertext[i] != ' ' and ciphertext[i+1] != ' ' and ciphertext[i+2] != ' ':
